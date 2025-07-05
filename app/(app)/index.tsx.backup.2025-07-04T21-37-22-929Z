@@ -1,0 +1,20 @@
+import { Redirect } from 'expo-router';
+import React from 'react';
+import { useAuth } from '../context/auth';
+
+export default function AppIndex() {
+  const { isAuthenticated, needsMnemonicSetup } = useAuth();
+
+  // If not authenticated, redirect to auth
+  if (!isAuthenticated) {
+    return <Redirect href="/(auth)/landing" />;
+  }
+
+  // If authenticated but needs mnemonic setup, redirect to mnemonic generation
+  if (needsMnemonicSetup) {
+    return <Redirect href="/(auth)/mnemonic-generation" />;
+  }
+
+  // If authenticated and mnemonic setup is complete, allow access to main app
+  return <Redirect href="/(app)/(tabs)/home" />;
+} 
