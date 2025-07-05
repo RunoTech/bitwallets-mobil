@@ -1,155 +1,212 @@
 import { Link } from 'expo-router';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import { useAuth } from '../context/auth';
-import { getOrCreateDeviceId } from '../lib/deviceid';
-import { useRouter } from 'expo-router';
 
 interface IFormInput {
+    email: string;
     password: string;
     confirmPassword: string;
 }
 
 export default function RegisterScreen() {
+    const {
+        registerCurrentStep,
+        setRegisterCurrentStep,
+        registerEmail,
+        setRegisterEmail,
+        registerPassword,
+        setRegisterPassword,
+        registerConfirmPassword,
+        setRegisterConfirmPassword,
+    } = useAuth();
     const theme = useTheme();
-    const [backendErrors, setBackendErrors] = useState<string[]>([]);
-    const [isRegistering, setIsRegistering] = useState(false);
+    
+    const {
+        control: emailControl,
+        handleSubmit: handleEmailSubmit,
+        formState: { errors: emailErrors },
+    } = useForm<IFormInput>({
+        defaultValues: {
+            email: '',
+        },
+    });
 
-    const { register } = useAuth();
-    const router = useRouter();
-
-    const { control, handleSubmit, formState: { errors }, watch } = useForm<IFormInput>({
+    const {
+        control: passwordControl,
+        handleSubmit: handlePasswordSubmit,
+        formState: { errors: passwordErrors },
+    } = useForm<IFormInput>({
         defaultValues: {
             password: '',
+        },
+    });
+
+    const {
+        control: confirmPasswordControl,
+        handleSubmit: handleConfirmPasswordSubmit,
+        formState: { errors: confirmPasswordErrors },
+    } = useForm<IFormInput>({
+        defaultValues: {
             confirmPassword: '',
         },
     });
 
-    const onRegisterSubmit: SubmitHandler<IFormInput> = async (data) => {
-        try {
-            setBackendErrors([]);
-            setIsRegistering(true);
-            if (!data.password || data.password.length < 6) {
-                setBackendErrors(['Password must be at least 6 characters']);
-                return;
-            }
-            if (data.password !== data.confirmPassword) {
-                setBackendErrors(['Passwords do not match']);
-                return;
-            }
-            
-            // Use the proper registration flow that handles user registration and wallet creation
-            const deviceId = await getOrCreateDeviceId();
-            const result = await register(deviceId, data.password, data.confirmPassword);
-            
-            if (result && result.success) {
-                // Directly redirect to mnemonic generation
-                router.push('/(auth)/mnemonic-generation' as any);
-            } else {
-                setBackendErrors(['Registration failed']);
-            }
-            
-        } catch (e: any) {
-            if (Array.isArray(e)) {
-                setBackendErrors(e);
-            } else {
-                setBackendErrors([e.message || 'Registration failed']);
-            }
-        } finally {
-            setIsRegistering(false);
+    const onRegisterSubmit: SubmitHandler<IFormInput> = (data) => {
+        switch (registerCurrentStep) {
+            case 1:
+                if (!emailErrors.email) {
+                    setRegisterEmail(data.email);
+                    setRegisterCurrentStep(registerCurrentStep+1);
+                }
+                break;
+            case 2:
+                if (!passwordErrors.password) {
+                    setRegisterPassword(data.password);
+                    setRegisterCurrentStep(registerCurrentStep+1);
+                }
+                break;
+            case 3:
+                if (!confirmPasswordErrors.confirmPassword) {
+                    setRegisterConfirmPassword(data.confirmPassword);
+                    alert('Registration successful: ' + JSON.stringify(data));
+                }
+                break;
         }
+        //register(data.email, data.password);
     };
 
-    const password = watch('password');
-
     return (
-        <View style={[styles.screen, { backgroundColor: theme.colors.background }]}> 
-            <View style={styles.header}>
-                <Text style={styles.title}>Create Wallet</Text>
-                <Text style={styles.subtitle}>Set up your secure wallet</Text>
-            </View>
+        <View style={[styles.screen, { backgroundColor: theme.colors.background }]}>
+            <Text variant="headlineMedium" style={styles.title}>
+                Create Account
+            </Text>
+            {
+                (() => {
+                    switch (registerCurrentStep) {
+                        case 1:
+                            return (
+                                <>
+                                    <Controller
+                                        control={emailControl}
+                                        rules={{
+                                            required: 'Email is required',
+                                            pattern: {
+                                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                                message: 'Invalid email address',
+                                            },
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <>
+                                                <Text>{JSON.stringify(value)}</Text>
+                                                <TextInput
+                                                    label="Email"
+                                                    value={value}
+                                                    onChangeText={onChange}
+                                                    autoCapitalize="none"
+                                                    keyboardType="email-address"
+                                                    style={styles.input}
+                                                    error={!!emailErrors.email}
+                                                />
+                                            </>
 
-            <View style={styles.form}>
-                <Controller
-                    control={control}
-                    name="password"
-                    rules={{
-                        required: 'Password is required',
-                        minLength: {
-                            value: 6,
-                            message: 'Password must be at least 6 characters'
-                        }
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            label="Password"
-                            value={value}
-                            onChangeText={onChange}
-                            onBlur={onBlur}
-                            secureTextEntry
-                            mode="outlined"
-                            style={styles.input}
-                            error={!!errors.password}
-                        />
-                    )}
-                />
-                {errors.password && (
-                    <Text style={styles.errorText}>{errors.password.message}</Text>
-                )}
+                                        )}
+                                        name="email"
+                                    />
+                                    {emailErrors.email && (
+                                        <Text style={styles.errorText}>{emailErrors.email.message}email</Text>
+                                    )}
+                                    <Button
+                                        mode="contained"
+                                        onPress={handleEmailSubmit(onRegisterSubmit)}
+                                        style={styles.button}
+                                    >
+                                        Next ({registerCurrentStep}/3)
+                                    </Button>
+                                </>
+                            )
+                        case 2:
+                            return (
+                                <>
+                                    <Controller
+                                        control={passwordControl}
+                                        rules={{
+                                            required: 'Password is required',
+                                            minLength: {
+                                                value: 6,
+                                                message: 'Password must be at least 6 characters',
+                                            },
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <>
+                                                <Text>{JSON.stringify(value)}</Text>
+                                                <TextInput
+                                                    label="Password"
+                                                    value={value}
+                                                    onChangeText={onChange}
+                                                    secureTextEntry
+                                                    style={styles.input}
+                                                    error={!!passwordErrors.password}
+                                                />
+                                            </>
 
-                <Controller
-                    control={control}
-                    name="confirmPassword"
-                    rules={{
-                        required: 'Please confirm your password',
-                        validate: (value) => value === password || 'Passwords do not match'
-                    }}
-                    render={({ field: { onChange, onBlur, value } }) => (
-                        <TextInput
-                            label="Confirm Password"
-                            value={value}
-                            onChangeText={onChange}
-                            onBlur={onBlur}
-                            secureTextEntry
-                            mode="outlined"
-                            style={styles.input}
-                            error={!!errors.confirmPassword}
-                        />
-                    )}
-                />
-                {errors.confirmPassword && (
-                    <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
-                )}
+                                        )}
+                                        name="password"
+                                    />
+                                    {passwordErrors.password && (
+                                        <Text style={styles.errorText}>{passwordErrors.password.message}pw</Text>
+                                    )}
+                                </>
+                            )
+                        case 3:
+                            return (
+                                <>
+                                    <Controller
+                                        control={confirmPasswordControl}
+                                        rules={{
+                                            required: 'Please confirm your password',
+                                            validate: value => value === registerPassword || 'Passwords do not match',
+                                        }}
+                                        render={({ field: { onChange, value } }) => (
+                                            <TextInput
+                                                label="Confirm Password"
+                                                value={value}
+                                                onChangeText={onChange}
+                                                secureTextEntry
+                                                style={styles.input}
+                                                error={!!confirmPasswordErrors.confirmPassword}
+                                            />
+                                        )}
+                                        name="confirmPassword"
+                                    />
+                                    {confirmPasswordErrors.confirmPassword && (
+                                        <Text style={styles.errorText}>{confirmPasswordErrors.confirmPassword.message}cpw</Text>
+                                    )}
+                                </>
+                            )
+                    }
+                })()
+            }
+            <Text>{JSON.stringify({registerEmail, registerPassword, registerConfirmPassword, registerCurrentStep})}</Text>
 
-                {backendErrors.length > 0 && (
-                    <View style={styles.errorContainer}>
-                        {backendErrors.map((error, index) => (
-                            <Text key={index} style={styles.errorText}>{error}</Text>
-                        ))}
-                    </View>
-                )}
 
-                <Button
-                    mode="contained"
-                    onPress={handleSubmit(onRegisterSubmit)}
-                    style={styles.button}
-                    loading={isRegistering}
-                    disabled={isRegistering}
-                >
-                    {isRegistering ? 'Creating Wallet...' : 'Create Wallet'}
-                </Button>
+            {
+                registerCurrentStep > 1 && (
+                    <Button
+                        mode="outlined"
+                        onPress={() => setRegisterCurrentStep(registerCurrentStep - 1)}
+                        style={styles.button}
+                    >
+                        Back
+                    </Button>
+                )
+            }
 
-                <View style={styles.linkContainer}>
-                    <Text style={styles.linkText}>Already have a wallet? </Text>
-                    <Link href="/(auth)/login" asChild>
-                        <TouchableOpacity>
-                            <Text style={[styles.linkText, { color: theme.colors.primary }]}>Sign In</Text>
-                        </TouchableOpacity>
-                    </Link>
-                </View>
-            </View>
+            <Link href="/login" asChild>
+                <Button mode="text">Already have an account? Login</Button>
+            </Link>
         </View>
     );
 }
@@ -157,48 +214,23 @@ export default function RegisterScreen() {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        padding: 20,
-    },
-    header: {
-        alignItems: 'center',
-        marginTop: 60,
-        marginBottom: 40,
+        padding: 16,
     },
     title: {
-        fontSize: 28,
-        fontWeight: 'bold',
-        marginBottom: 8,
-    },
-    subtitle: {
-        fontSize: 16,
-        color: '#666',
+        marginBottom: 24,
         textAlign: 'center',
     },
-    form: {
-        flex: 1,
-    },
     input: {
-        marginBottom: 16,
-    },
-    button: {
-        marginTop: 24,
-        marginBottom: 16,
-        paddingVertical: 8,
-    },
-    linkContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    linkText: {
-        fontSize: 16,
-    },
-    errorText: {
-        color: '#d32f2f',
-        fontSize: 12,
         marginBottom: 8,
     },
-    errorContainer: {
-        marginBottom: 16,
+    button: {
+        marginTop: 16,
+        marginBottom: 8,
     },
-});
+    errorText: {
+        color: 'red',
+        fontSize: 12,
+        marginBottom: 8,
+        marginLeft: 4,
+    },
+}); 

@@ -1,54 +1,25 @@
-// Import global polyfills first
-import './lib/global-polyfills';
-
-import { Stack } from 'expo-router';
-import React, { useEffect } from 'react';
+import { Slot } from 'expo-router';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { PaperProvider } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AuthProvider from './context/auth';
-import { WalletProvider } from './context/wallet';
+import { AuthProvider } from './context/auth';
 import { theme } from './theme';
-import { useFonts } from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { resetDeviceId } from './lib/deviceid';
-
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const insets = useSafeAreaInsets();
-  const [fontsLoaded, fontError] = useFonts({
-    ...MaterialCommunityIcons.font,
-  });
-
-  useEffect(() => {
-    if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontError]);
-
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
 
   return (
-      <PaperProvider theme={theme}>
-        <View style={[styles.container, { 
-          backgroundColor: theme.colors.background,
-          paddingTop: insets.top 
-        }]}>
-          <AuthProvider>
-            <WalletProvider>
-              <Stack>
-                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                <Stack.Screen name="(app)" options={{ headerShown: false }} />
-              </Stack>
-            </WalletProvider>
-          </AuthProvider>
-        </View>
-      </PaperProvider>
-    
+    <PaperProvider theme={theme}>
+      <View style={[styles.container, { 
+        backgroundColor: theme.colors.background,
+        paddingTop: insets.top 
+      }]}>
+        <AuthProvider>
+          <Slot />
+        </AuthProvider>
+      </View>
+    </PaperProvider>
   );
 }
 

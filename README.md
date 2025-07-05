@@ -1,121 +1,50 @@
-# BitWallets Mobile App
+# Welcome to your Expo app 👋
 
-A React Native mobile wallet application for managing cryptocurrency wallets.
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## 🚀 Quick Start
+## Get started
 
-### Prerequisites
-- Node.js (v18 or higher)
-- EAS CLI: `npm install -g @expo/eas-cli`
-- Expo account at [expo.dev](https://expo.dev)
+1. Install dependencies
 
-### Installation
+   ```bash
+   npm install
+   ```
+
+2. Start the app
+
+   ```bash
+   npx expo start
+   ```
+
+In the output, you'll find options to open the app in a
+
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+
+## Get a fresh project
+
+When you're ready, run:
+
 ```bash
-cd bitwallets-mobil
-npm install
+npm run reset-project
 ```
 
-### Development
-```bash
-npm start
-```
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-### Build APK
-```bash
-# Using the build script (recommended)
-./build-apk.sh
+## Learn more
 
-# Or manually
-npm run build
-```
+To learn more about developing your project with Expo, look at the following resources:
 
-## 📱 App Configuration
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-### Backend Connection
-- **URL**: `http://207.154.200.212:3000`
-- **Protocol**: HTTP
-- **CSRF Protection**: Enabled
-- **Network Security**: Configured for cleartext traffic
+## Join the community
 
-### Features
-- User registration and authentication
-- Wallet creation and management
-- Multi-currency support (Ethereum, Tron, etc.)
-- Secure mnemonic generation
-- Device-based security
+Join our community of developers creating universal apps.
 
-## 🏗️ Build Profiles
-
-- **Production**: `eas build --profile production --platform android`
-- **Preview**: `eas build --profile preview --platform android`
-- **Development**: `eas build --profile development --platform android`
-
-## 📋 Requirements
-
-### Backend Endpoints
-- `POST /auth/register` - User registration
-- `POST /auth/login` - User authentication
-- `GET /csrf-token` - CSRF token endpoint
-- `GET /health` - Health check
-- Wallet management endpoints
-
-### Android Permissions
-- Internet access
-- Network state
-- WiFi state
-- Location (for network diagnostics)
-- External storage
-
-## 🔧 Configuration Files
-
-- `app.json` - App configuration and permissions
-- `eas.json` - Build profiles and settings
-- `app/lib/axios.ts` - Network configuration
-- `app/context/auth.tsx` - Authentication logic
-
-## 📖 Documentation
-
-For detailed build instructions, see [APK_BUILD_GUIDE.md](./APK_BUILD_GUIDE.md)
-
-## 🛠️ Development
-
-### Project Structure
-```
-app/
-├── (auth)/          # Authentication screens
-├── (app)/           # Main app screens
-├── context/         # React context providers
-├── lib/             # Utility libraries
-├── services/        # API services
-└── theme/           # UI theme configuration
-```
-
-### Key Dependencies
-- React Native
-- Expo Router
-- Axios (HTTP client)
-- React Hook Form
-- React Native Paper (UI components)
-- Ethers.js (Ethereum library)
-
-## 🔒 Security
-
-- CSRF token protection
-- Device ID generation
-- Password validation
-- Secure storage for sensitive data
-- Network security configuration
-
-## 📞 Support
-
-For issues or questions:
-1. Check the console logs
-2. Verify backend connectivity
-3. Review network configuration
-4. Test with different devices
-
----
-
-**Version**: 1.0.0  
-**Backend**: http://207.154.200.212:3000  
-**Platform**: Android APK
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
