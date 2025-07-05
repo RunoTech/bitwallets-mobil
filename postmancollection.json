@@ -1,0 +1,568 @@
+{
+	"info": {
+		"_postman_id": "ee46977b-4340-40b3-9de8-248194df74b4",
+		"name": "Crypto Wallet API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18570374",
+		"_collection_link": "https://botproject-2983.postman.co/workspace/goca~9c752d86-4f8d-45ba-8f50-712a65a3c5f7/collection/18570374-ee46977b-4340-40b3-9de8-248194df74b4?action=share&source=collection_link&creator=18570374",
+		"description": "All endpoints for the Crypto Wallet API"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": { "raw": "http://localhost:3000/health", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["health"] }
+			}
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login (example, if exists)",
+					"request": {
+						"method": "POST",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"url": { "raw": "http://localhost:3000/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "auth", "login"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"user@example.com\",\n  \"password\": \"password123\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Wallets",
+			"item": [
+				{
+					"name": "Create Wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/wallet", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "wallet"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"deviceid\": \"device123\",\n  \"blockchain\": \"ETH\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Get Wallets by Device",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/wallet/device/{{deviceid}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "wallet", "device", "{{deviceid}}"] }
+					}
+				},
+				{
+					"name": "Get Wallet by Address",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/wallet/{{address}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "wallet", "{{address}}"] }
+					}
+				},
+				{
+					"name": "Get Wallet Balance",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": {
+							"raw": "http://localhost:3000/api/wallet/{{address}}/balance?blockchain=ETH",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "3000",
+							"path": ["api", "wallet", "{{address}}", "balance"],
+							"query": [{ "key": "blockchain", "value": "ETH" }]
+						}
+					}
+				},
+				{
+					"name": "Import Wallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/wallet/import", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "wallet", "import"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"deviceid\": \"device123\",\n  \"blockchain\": \"ETH\",\n  \"privateKey\": \"your_private_key_here\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Delete Wallet",
+					"request": {
+						"method": "DELETE",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/wallet/{{address}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "wallet", "{{address}}"] }
+					}
+				},
+				{
+					"name": "Get Wallet Transactions",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/wallet/{{address}}/transactions", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "wallet", "{{address}}", "transactions"] }
+					}
+				},
+				{
+					"name": "Update Wallet Balance",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/wallet/{{address}}/balance", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "wallet", "{{address}}", "balance"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"balance\": \"1.234\"\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Transactions",
+			"item": [
+				{
+					"name": "Create Transaction",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/transactions", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "transactions"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"deviceid\": \"device123\",\n  \"toAddress\": \"0x...\",\n  \"amount\": \"0.01\",\n  \"blockchain\": \"ETH\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Get Transaction by ID",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/transactions/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "transactions", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Get Transactions by Device",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/transactions/device/{{deviceid}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "transactions", "device", "{{deviceid}}"] }
+					}
+				},
+				{
+					"name": "Get Transaction Status",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/transactions/status/{{txid}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "transactions", "status", "{{txid}}"] }
+					}
+				},
+				{
+					"name": "Get Wallet Transactions",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/transactions/wallet/{{address}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "transactions", "wallet", "{{address}}"] }
+					}
+				},
+				{
+					"name": "Get Transaction Stats",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/transactions/stats/{{deviceid}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "transactions", "stats", "{{deviceid}}"] }
+					}
+				}
+			]
+		},
+		{
+			"name": "Stakes",
+			"item": [
+				{
+					"name": "Create Stake",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/stakes", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "stakes"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"deviceid\": \"device123\",\n  \"blockchain\": \"ETH\",\n  \"amount\": \"1.0\",\n  \"period\": 30,\n  \"rate\": 5.0\n}"
+						}
+					}
+				},
+				{
+					"name": "Get Stake by ID",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/stakes/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "stakes", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Get Stakes by Device",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/stakes/device/{{deviceid}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "stakes", "device", "{{deviceid}}"] }
+					}
+				},
+				{
+					"name": "Get Stake Status",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/stakes/status/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "stakes", "status", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Calculate Stake Rewards",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/stakes/rewards/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "stakes", "rewards", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Get Stake Stats",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/stakes/stats/{{deviceid}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "stakes", "stats", "{{deviceid}}"] }
+					}
+				},
+				{
+					"name": "Update Stake Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/stakes/status/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "stakes", "status", "{{id}}"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": 1\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Chains",
+			"item": [
+				{
+					"name": "Create Chain",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/chains", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ethereum\",\n  \"symbol\": \"ETH\",\n  \"rpc_url\": \"https://compatible-tiniest-pallet.quiknode.pro/bbfe6bf4786e7a025f63486c84862c05b2644451\",\n  \"chain_id\": 1,\n  \"explorer_url\": \"https://etherscan.io\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Get Chain by ID",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/chains/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Get Chain by Symbol",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/chains/symbol/{{symbol}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "symbol", "{{symbol}}"] }
+					}
+				},
+				{
+					"name": "Get All Chains",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/chains", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains"] }
+					}
+				},
+				{
+					"name": "Update Chain",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/chains/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "{{id}}"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Ethereum Mainnet Updated\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Delete Chain",
+					"request": {
+						"method": "DELETE",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/chains/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Add Token to Chain",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/chains/{{id}}/tokens", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "{{id}}", "tokens"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"symbol\": \"USDT\",\n  \"name\": \"Tether\",\n  \"address\": \"0xdac17f958d2ee523a2206206994597c13d831ec7\",\n  \"decimals\": 6\n}"
+						}
+					}
+				},
+				{
+					"name": "Get Chain Tokens",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/chains/{{id}}/tokens", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "{{id}}", "tokens"] }
+					}
+				},
+				{
+					"name": "Get Chain Status",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/chains/{{symbol}}/status", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "{{symbol}}", "status"] }
+					}
+				},
+				{
+					"name": "Get Chain Stats",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/chains/stats", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "stats"] }
+					}
+				},
+				{
+					"name": "Update Chain Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/chains/{{id}}/status", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "{{id}}", "status"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": 1\n}"
+						}
+					}
+				},
+				{
+					"name": "Validate Chain Connection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/chains/{{symbol}}/validate", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "chains", "{{symbol}}", "validate"] }
+					}
+				}
+			]
+		},
+		{
+			"name": "API Keys",
+			"item": [
+				{
+					"name": "Create API Key",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"url": { "raw": "http://localhost:3000/api/keys", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "keys"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"blockchain\": \"ETH\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Get All API Keys",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "http://localhost:3000/api/keys", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "keys"] }
+					}
+				},
+				{
+					"name": "Get API Key by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "http://localhost:3000/api/keys/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "keys", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Update API Key",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"url": { "raw": "http://localhost:3000/api/keys/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "keys", "{{id}}"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"busy\": 1\n}"
+						}
+					}
+				},
+				{
+					"name": "Delete API Key",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": { "raw": "http://localhost:3000/api/keys/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "keys", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Get API Key by Blockchain",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": { "raw": "http://localhost:3000/api/keys/blockchain/{{blockchain}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "keys", "blockchain", "{{blockchain}}"] }
+					}
+				},
+				{
+					"name": "Update API Key Status",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"url": { "raw": "http://localhost:3000/api/keys/{{id}}/status", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "keys", "{{id}}", "status"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"busy\": 1\n}"
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "API Requests",
+			"item": [
+				{
+					"name": "Create API Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/requests", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "requests"] },
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"deviceid\": \"device123\",\n  \"blockchain\": \"ETH\",\n  \"cmd\": \"getBalance\",\n  \"wallet\": \"0x...\"\n}"
+						}
+					}
+				},
+				{
+					"name": "Get API Request by ID",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/requests/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "requests", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Get API Requests by Device",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/requests/device/{{deviceid}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "requests", "device", "{{deviceid}}"] }
+					}
+				},
+				{
+					"name": "Get Pending API Requests by Blockchain",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/requests/blockchain/{{blockchain}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "requests", "blockchain", "{{blockchain}}"] }
+					}
+				},
+				{
+					"name": "Update API Request Run Date",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "x-api-key", "value": "{{api_key}}" }
+						],
+						"url": { "raw": "http://localhost:3000/api/requests/{{id}}/run-date", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "requests", "{{id}}", "run-date"] }
+					}
+				},
+				{
+					"name": "Delete API Request",
+					"request": {
+						"method": "DELETE",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/requests/{{id}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "requests", "{{id}}"] }
+					}
+				},
+				{
+					"name": "Get API Request Stats",
+					"request": {
+						"method": "GET",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/requests/stats/{{deviceid}}", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "requests", "stats", "{{deviceid}}"] }
+					}
+				},
+				{
+					"name": "Clear Old API Requests",
+					"request": {
+						"method": "DELETE",
+						"header": [{ "key": "x-api-key", "value": "{{api_key}}" }],
+						"url": { "raw": "http://localhost:3000/api/requests/clear?days=30", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "requests", "clear"], "query": [{ "key": "days", "value": "30" }] }
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{ "key": "api_key", "value": "api_keyin" },
+		{ "key": "deviceid", "value": "device123" },
+		{ "key": "address", "value": "0x..." },
+		{ "key": "id", "value": "1" },
+		{ "key": "txid", "value": "0x..." },
+		{ "key": "symbol", "value": "ETH" },
+		{ "key": "blockchain", "value": "ETH" }
+	]
+}
