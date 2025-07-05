@@ -6,7 +6,19 @@ import { Button, Text, useTheme } from 'react-native-paper';
 import { useAuth } from '../context/auth';
 
 export default function LandingScreen() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const { register } = useAuth();
     const theme = useTheme();
+
+    const handleRegister = () => {
+        if (password !== confirmPassword) {
+            return;
+        }
+        register(email, password);
+    };
+
     return (
         <View style={[styles.screen, { backgroundColor: theme.colors.background }]}>
             <View style={[styles.containerTop, styles.container]}>
@@ -15,10 +27,10 @@ export default function LandingScreen() {
             </View>
             <View style={[styles.containerBottom, styles.container]}>
                 <Link href={'/register'} asChild>
-                    <Button style={styles.button} mode={'contained'}>Create Account & Wallets</Button>
+                    <Button style={styles.button} mode={'contained'}>Create New Wallet</Button>
                 </Link>
-                <Link href={'/import'} asChild>
-                    <Button style={styles.button} mode={'contained'}>Import Existing Wallet</Button>
+                <Link href={'/login'} asChild>
+                    <Button style={styles.button} mode={'contained'}>I already have a wallet</Button>
                 </Link>
                 <Text style={styles.footerText}>
                     By continuing, you agree to our&nbsp;

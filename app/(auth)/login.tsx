@@ -1,129 +1,59 @@
 import { Link } from 'expo-router';
 import React, { useState } from 'react';
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { StyleSheet, View } from 'react-native';
 import { Button, Text, TextInput, useTheme } from 'react-native-paper';
 import { useAuth } from '../context/auth';
 
-interface IFormInput {
-    password: string;
-}
-
 export default function LoginScreen() {
-    const { login, deviceId, isLoading } = useAuth();
-    const theme = useTheme();
-    const [backendErrors, setBackendErrors] = useState<string[]>([]);
+  const [password, setPassword] = useState('');
+  const { login, loginEmail } = useAuth();
+  const theme = useTheme();
 
-    const { control, handleSubmit, formState: { errors } } = useForm<IFormInput>({
-        defaultValues: {
-            password: '',
-        },
-    });
+  const handleLogin = () => {
+    login(loginEmail, password);
+  };
 
-    const onLoginSubmit: SubmitHandler<IFormInput> = async (data) => {
-        try {
-            setBackendErrors([]);
-            if (!deviceId) {
-                setBackendErrors(['Device ID not found']);
-                return;
-            }
-            await login(deviceId, data.password);
-        } catch (error: any) {
-            console.error('Login failed:', error);
-            const message = error.response?.data?.message || error.message || 'Login failed';
-            setBackendErrors([message]);
-        }
-    };
-
-    // Show loading spinner while auth is initializing
-    if (isLoading) {
-        return (
-            <View style={[styles.screen, { backgroundColor: theme.colors.background, justifyContent: 'center', alignItems: 'center' }]}> 
-                <Text variant="headlineMedium" style={styles.title}>Loading...</Text>
-            </View>
-        );
-    }
-
-    // Show error if deviceId is still missing after loading
-    if (!deviceId) {
-        return (
-            <View style={[styles.screen, { backgroundColor: theme.colors.background, justifyContent: 'center', alignItems: 'center' }]}> 
-                <Text variant="headlineMedium" style={styles.title}>Device ID could not be generated. Please restart the app.</Text>
-            </View>
-        );
-    }
-
-    return (
-        <View style={[styles.screen, { backgroundColor: theme.colors.background }]}>
-            <Text variant="headlineMedium" style={styles.title}>
-                Welcome Back
-            </Text>
-            {backendErrors.length > 0 && (
-                <View style={{ marginBottom: 12 }}>
-                    {backendErrors.map((msg, idx) => (
-                        <Text key={idx} style={styles.errorText}>{msg}</Text>
-                    ))}
-                </View>
-            )}
-            <Controller
-                control={control}
-                rules={{
-                    required: 'Password is required',
-                    minLength: {
-                        value: 6,
-                        message: 'Password must be at least 6 characters',
-                    },
-                }}
-                render={({ field: { onChange, value } }) => (
-                    <TextInput
-                        label="Password"
-                        value={value}
-                        onChangeText={onChange}
-                        secureTextEntry
-                        style={styles.input}
-                        error={!!errors.password}
-                    />
-                )}
-                name="password"
-            />
-            {errors.password && (
-                <Text style={styles.errorText}>{errors.password.message}</Text>
-            )}
-            <Button
-                mode="contained"
-                onPress={handleSubmit(onLoginSubmit)}
-                style={styles.button}
-                disabled={!deviceId}
-            >
-                Login
-            </Button>
-            <Link href="/register" asChild>
-                <Button mode="text">Don't have an account? Register</Button>
-            </Link>
-        </View>
-    );
+  return (
+    <View style={[styles.screen, { backgroundColor: theme.colors.background }]}>
+      <Text variant="headlineMedium" style={styles.title}>
+        Welcome Back {loginEmail}
+      </Text>
+      <TextInput
+        label="Email"
+        value={loginEmail}
+        autoCapitalize="none"
+        keyboardType="email-address"
+        style={styles.input}
+      />
+      <TextInput
+        label="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        style={styles.input}
+      />
+      <Button mode="contained" onPress={handleLogin} style={styles.button}>
+        Login
+      </Button>
+      <Link href="/register" asChild>
+        <Button mode="text">Don't have an account? Register</Button>
+      </Link>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        padding: 16,
-    },
-    title: {
-        marginBottom: 24,
-        textAlign: 'center',
-    },
-    input: {
-        marginBottom: 8,
-    },
-    button: {
-        marginTop: 16,
-        marginBottom: 8,
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 12,
-        marginBottom: 8,
-        marginLeft: 4,
-    },
-});
+  screen: {
+    flex: 1,
+    padding: 16
+  },
+  title: {
+    marginBottom: 24,
+  },
+  input: {
+    marginBottom: 16,
+  },
+  button: {
+    marginBottom: 8,
+  },
+}); 

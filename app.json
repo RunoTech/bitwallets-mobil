@@ -1,122 +1,44 @@
 {
   "expo": {
-    "name": "BitWallets",
-    "slug": "bitwallets-mobil",
+    "name": "bitwallets",
+    "slug": "bitwallets",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "icon": "./assets/images/icon.png",
+    "scheme": "bitwallets",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.bitwallets",
-      "infoPlist": {
-        "NSAppTransportSecurity": {
-          "NSAllowsArbitraryLoads": true,
-          "NSAllowsArbitraryLoadsInWebContent": true,
-          "NSAllowsLocalNetworking": true,
-          "NSAllowsArbitraryLoadsForMedia": true,
-          "NSExceptionDomains": {
-            "207.154.200.212": {
-              "NSExceptionAllowsInsecureHTTPLoads": true,
-              "NSExceptionMinimumTLSVersion": "1.0",
-              "NSExceptionRequiresForwardSecrecy": false,
-              "NSIncludesSubdomains": true,
-              "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
-              "NSTemporaryExceptionMinimumTLSVersion": "1.0"
-            },
-            "localhost": {
-              "NSExceptionAllowsInsecureHTTPLoads": true,
-              "NSExceptionMinimumTLSVersion": "1.0",
-              "NSExceptionRequiresForwardSecrecy": false,
-              "NSIncludesSubdomains": true
-            },
-            "10.0.2.2": {
-              "NSExceptionAllowsInsecureHTTPLoads": true,
-              "NSExceptionMinimumTLSVersion": "1.0",
-              "NSExceptionRequiresForwardSecrecy": false,
-              "NSIncludesSubdomains": true
-            },
-            "127.0.0.1": {
-              "NSExceptionAllowsInsecureHTTPLoads": true,
-              "NSExceptionMinimumTLSVersion": "1.0",
-              "NSExceptionRequiresForwardSecrecy": false,
-              "NSIncludesSubdomains": true
-            },
-            "0.0.0.0": {
-              "NSExceptionAllowsInsecureHTTPLoads": true,
-              "NSExceptionMinimumTLSVersion": "1.0",
-              "NSExceptionRequiresForwardSecrecy": false,
-              "NSIncludesSubdomains": true
-            }
-          }
-        },
-        "NSLocalNetworkUsageDescription": "This app needs to access local network to connect to the backend server.",
-        "NSBonjourServices": [
-          "_http._tcp",
-          "_https._tcp"
-        ],
-        "NSLocationWhenInUseUsageDescription": "This app needs location access for network connectivity testing.",
-        "CFBundleURLTypes": [
-          {
-            "CFBundleURLName": "com.anonymous.bitwallets",
-            "CFBundleURLSchemes": [
-              "bitwallets-mobil"
-            ]
-          }
-        ]
-      }
+      "bundleIdentifier": "com.anonymous.bitwallets"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.bitwallets",
-      "versionCode": 1,
-      "permissions": [
-        "INTERNET",
-        "ACCESS_NETWORK_STATE",
-        "ACCESS_WIFI_STATE",
-        "ACCESS_FINE_LOCATION",
-        "ACCESS_COARSE_LOCATION",
-        "WRITE_EXTERNAL_STORAGE",
-        "READ_EXTERNAL_STORAGE"
-      ],
-      "usesCleartextTraffic": true,
-      "allowBackup": true,
-      "networkSecurityConfig": {
-        "domain-config": [
-          {
-            "domain": "207.154.200.212",
-            "cleartextTrafficPermitted": true
-          }
-        ]
-      }
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.bitwallets"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff"
+        }
+      ]
     ],
-    "scheme": "bitwallets-mobil",
     "experiments": {
       "typedRoutes": true
-    },
-    "extra": {
-      "router": {},
-      "eas": {
-        "projectId": "ba4ddec4-91b7-422e-a8e1-315cfa7e90e2"
-      }
-    },
-    "owner": "valor3343"
+    }
   }
 }

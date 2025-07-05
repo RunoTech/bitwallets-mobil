@@ -1,34 +1,24 @@
-import { Stack } from 'expo-router';
-import React from 'react';
+import { Stack, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
+import { useAuth } from '../context/auth';
 
 export default function AppLayout() {
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.replace('/(auth)/landing');
+    }
+  }, [isAuthenticated, isLoading]);
+
+  if (isLoading) {
+    return null; // or a loading screen
+  }
+
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="create-wallet" options={{ headerShown: false }} />
-      <Stack.Screen 
-        name="coin-management" 
-        options={{ 
-          headerShown: false,
-          presentation: 'modal'
-        }} 
-      />
-      <Stack.Screen 
-        name="import-wallet" 
-        options={{ 
-          headerShown: false,
-          presentation: 'modal'
-        }} 
-      />
-      <Stack.Screen name="send" options={{
-        headerShown: false,
-      }} />
-      <Stack.Screen name="receive" options={{ headerShown: false }} />
-      <Stack.Screen name="send-form" options={{
-        headerShown: false,
-      }} />
-      <Stack.Screen name="receive-detail" options={{ headerShown: false }} />
-      <Stack.Screen name="test-trust-wallet" options={{ headerShown: false }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
     </Stack>
   );
 } 
